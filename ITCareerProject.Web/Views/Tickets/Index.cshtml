@@ -1,0 +1,59 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ICollection<ITCareerProject.Services.DTOs.Tickets.TicketWithEventAndUserDto>
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    ViewData["Title"] = "Tickets";
+}
+
+@if (Model.Any())
+{
+    <div>
+        @foreach (var ticketDto in Model)
+        {
+            <div class="w-100 d-flex align-items-center bg-white m-1 p-3 rounded-3 light-shadow">
+                <div class="d-inline-flex justify-content-center col-3 flex-column align-items-center">
+                    <img class="card-img-top" src="@ticketDto.Event.Photo" style="max-width: 150px; max-height: 150px; margin: 0 auto;" alt="image">
+                </div>
+
+                <div class="d-inline-flex flex-column col-4">
+                    @($"{ticketDto.Event.PremiereDate:dd/MM/yyyy} -> {ticketDto.Event.Name}")
+                    <span>
+                        Bought by: @($"{ticketDto.User.FirstName} {ticketDto.User.LastName} ({ticketDto.User.UserName})")
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-controller="Users" asp-action="Details" asp-route-id="@ticketDto.User.Id" class="mb-1">
+                                <button class="btn btn-sm btn-primary">
+                                    User info
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </a>
+                        }
+                    </span>
+                </div>
+                <div class="d-inline-flex justify-content-center col-2">
+                </div>
+                <div class="d-inline-flex justify-content-center col-3 flex-column align-items-center">
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <button class="btn btn-danger admin-delete-ticket" data-id="@ticketDto.Id" style="margin-bottom: 3px">
+                            <i class="fas fa-trash-alt"></i> (Admin) Delete ticket
+                        </button>
+                    }
+
+                    @if (ticketDto.User.Id == userId)
+                    {
+                        <button class="btn btn-danger delete-ticket" data-id="@ticketDto.Event.Id">
+                            <i class="fas fa-unlink"></i> Remove your ticket
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h3 style="color:white;">No tickets found!</h3>
+}
+<script src="js/tickets.js"></script>

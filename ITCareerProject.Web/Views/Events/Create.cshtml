@@ -1,0 +1,50 @@
+﻿@model ITCareerProject.Services.DTOs.Events.CreateEventDto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="card light-shadow m-0 m-auto col-5">
+    <div class="img-fluid text-center mt-2">
+        <img class="card-img-top img-fluid" style="width: 20rem" style="object-fit: contain" src="https://cdn-icons-png.flaticon.com/512/10578/10578630.png" alt="Person image">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create new event</h5>
+        <div>
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control name-input" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control description-input" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Photo" class="control-label"></label>
+                    <input asp-for="Photo" class="form-control file-input" accept="image/*" />
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PremiereDate" class="control-label"></label>
+                    <input asp-for="PremiereDate" class="form-control" />
+                    <span asp-validation-for="PremiereDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Create" class="btn btn-primary fake-submit" />
+                    <input type="submit" value="Create" class="btn btn-primary real-submit" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="~/js/events.js"></script>

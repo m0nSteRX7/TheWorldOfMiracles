@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var index = 0;
+}
+@if (User.IsInRole("Administrator"))
+{
+    <div class="text-center" style="color:white;">
+        <h1 class="display-4">Site Stats</h1>
+        <h4 style="margin-top: 30px">Here you can see your progress!</h4>
+    </div>
+    <br/>
+
+    <div class="card rounded-0">
+        <h3 class="card-header h5 rounded-0">
+            Platform statistics
+        </h3>
+        <div class="card-block">
+            <ul class="list-group">
+                <li class="list-group-item d-flex bg-white justify-content-between align-items-center">
+                    <div class="col-10 d-flex justify-content-between align-items-center m-2">
+                        Users
+                        <span class="badge badge-secondary bg-secondary">@(ViewBag.UsersCount)</span>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex bg-light justify-content-between align-items-center">
+                    <div class="col-10 d-flex justify-content-between align-items-center m-2">
+                        Events
+                        <span class="badge badge-secondary bg-secondary">@(ViewBag.EventsCount)</span>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex bg-white justify-content-between align-items-center">
+                    <div class="col-10 d-flex justify-content-between align-items-center m-2">
+                        Tickets
+                        <span class="badge badge-secondary bg-secondary">@(ViewBag.TicketsCount)</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="text-center" style="color:white;">
+        <h1 class="display-4">The World Of Miracles!</h1>
+        <h4 style="margin-top: 30px">Book a ticket for an event with us!</h4>
+    </div>
+}

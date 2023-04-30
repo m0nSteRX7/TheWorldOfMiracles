@@ -1,0 +1,84 @@
+﻿@using ITCareerProject.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@model ITCareerProject.Services.DTOs.Events.EventDto
+
+@{
+    ViewData["Title"] = "Details";
+
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var currentUserHasTicketForEvent = Model.Tickets.Any(t => t.UserId == userId);
+}
+
+<div class="card light-shadow m-0 m-auto col-5">
+    <div class="img-fluid text-center mt-1">
+        <img class="card-img-top img-fluid" style="width: 20rem" style="object-fit: contain" src="@Model.Photo" alt="Person image">
+    </div>
+    <input type="hidden" class="Id" value="@Model.Id" />
+    <div class="card-body">
+        <h5 class="card-title">Event details:</h5>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.PremiereDate)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.PremiereDate)
+                </dd>
+            </dl>
+        </div>
+        <hr />
+
+        <br />
+        <a asp-action="Index">
+            <button class="btn btn-primary">
+                <i class="fas fa-backward"></i> Back to List
+            </button>
+        </a>
+
+        @if (currentUserHasTicketForEvent)
+        {
+            <button class="btn btn-danger delete-ticket" data-id="@Model.Id">
+                <i class="fas fa-trash-alt"></i> Delete ticket
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-success buy-ticket" data-id="@Model.Id">
+                <i class="fas fa-ticket-alt"></i> Buy ticket
+            </button>
+        }
+
+        @if (User.IsInRole(Enum.GetName(DefaultRoles.Administrator)))
+        {
+
+            <a asp-action="Edit" asp-route-id="@Model.Id">
+                <button class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+            </a>
+
+
+            <a asp-action="Delete" asp-route-id="@Model.Id">
+                <button class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </a>
+        }
+    </div>
+</div>
+
+<script src="~/js/tickets.js"></script>

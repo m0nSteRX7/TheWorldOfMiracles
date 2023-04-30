@@ -1,0 +1,95 @@
+﻿@using ITCareerProject.Services
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ICollection<ITCareerProject.Services.DTOs.Users.BaseUserDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:white;">Index</h1>
+
+@if (User.IsInRole(Enum.GetName(DefaultRoles.Administrator)))
+{
+    <p>
+        <a asp-action="Create">
+            <button class="btn btn-success">
+                <i class="fas fa-user-plus"></i> New User
+            </button>
+        </a>
+    </p>
+}
+@if (Model.Any())
+{
+    <div class="users-wrapper d-flex flex-wrap justify-content-evenly">
+        @foreach (var user in Model)
+        {
+            <div class="card light-shadow m-2" style="flex-basis: 25%">
+                <img class="card-img-top" src="~/images/user.png" style="max-width: 200px; margin: 0 auto;" alt="image">
+                <div class="card-body">
+                    <h5 class="card-title">@($"{user.FirstName} {user.LastName}")</h5>
+                    <p class="card-text">@user.Username</p>
+
+                    <hr/>
+                    <div class="buttons-holder d-flex flex-wrap">
+                        <a asp-action="Details" asp-route-id="@user.Id" class="mb-1" style="width: 95%">
+                            <button class="btn btn-primary" style="width: 95%">
+                                <i class="fas fa-info-circle"></i> More info
+                            </button>
+                        </a>
+
+                        @if (User.IsInRole(Enum.GetName(DefaultRoles.Administrator)))
+                        {
+                            <div class="d-flex justify-content-around" style="width: 95%">
+                                <a asp-action="Edit" asp-route-id="@user.Id" class="m-1">
+                                    <button class="btn btn-warning">
+                                        <i class="fas fa-user-edit"></i> Edit
+                                    </button>
+                                </a>
+
+                                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != user.Id)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@user.Id" class="m-1">
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-user-times"></i> Delete
+                                        </button>
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="input-group d-flex justify-content-center mt-3">
+        <div class="form-outline">
+            <input type="search" id="keyword" class="form-control" />
+        </div>
+        <button type="button" id="search-btn" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+}
+else
+{
+    <h6 style="color:white;">No users found!</h6>
+}
+
+<script>
+    var controllerName = $("#main-path").val();
+    
+    $("#search-btn").click(initiateSearch);
+    $("#keyword").on("keypress",
+        function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                initiateSearch();
+            }
+        });
+    function initiateSearch() {
+        var keyword = $("#keyword").val();
+        window.location.href = `/Users?keyword=${keyword}`;
+    }
+</script>

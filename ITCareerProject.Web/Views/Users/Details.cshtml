@@ -1,0 +1,75 @@
+﻿@using ITCareerProject.Services
+@using System.Security.Claims
+@model ITCareerProject.Services.DTOs.Users.BaseUserDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div class="card light-shadow m-0 m-auto col-5">
+    <div class="img-fluid text-center mt-1">
+        <img class="card-img-top img-fluid" style="width: 20rem" style="object-fit: contain" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Person image">
+    </div>
+    <input type="hidden" class="Id" value="@Model.Id" />
+    <div class="card-body">
+        <h5 class="card-title">User details</h5>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.RoleName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.RoleName)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Username)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Username)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+            </dl>
+        </div>
+        <a asp-action="Index">
+            <button class="btn btn-primary">
+                <i class="fas fa-backward"></i> Back to List
+            </button>
+        </a>
+
+        @if (User.IsInRole(Enum.GetName(DefaultRoles.Administrator)))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id">
+                <button class="btn btn-warning">
+                    <i class="fas fa-user-edit"></i> Edit
+                </button>
+            </a>
+
+            @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != @Model?.Id)
+            {
+                <a asp-action="Delete" asp-route-id="@Model?.Id">
+                    <button class="btn btn-danger">
+                        <i class="fas fa-user-times"></i> Delete
+                    </button>
+                </a>
+            }
+        }
+    </div>
+</div>

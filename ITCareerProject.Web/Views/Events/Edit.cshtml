@@ -1,0 +1,52 @@
+﻿@model ITCareerProject.Services.DTOs.Events.EventDto
+
+@{
+    ViewData["Title"] = "Edit";
+    var imageSrc = string.IsNullOrWhiteSpace(Model.Photo) ? "https://cdn-icons-png.flaticon.com/512/10578/10578630.png" : Model.Photo;
+}
+
+
+<div class="card light-shadow m-0 m-auto col-5">
+    <div class="img-fluid text-center mt-2">
+        <img class="card-img-top img-fluid" style="width: 20rem" style="object-fit: contain" src="@imageSrc" alt="Person image">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Edit the event</h5>
+        <div>
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input asp-for="Id" type="hidden" value="@Model.Id"/>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control name-input"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control description-input"/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoInput" class="control-label"></label>
+                    <input asp-for="PhotoInput" class="form-control file-input" accept="image/*" />
+                    <span asp-validation-for="PhotoInput" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PremiereDate" class="control-label"></label>
+                    <input asp-for="PremiereDate" class="form-control"/>
+                    <span asp-validation-for="PremiereDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Create" class="btn btn-primary fake-submit"/>
+                    <input type="submit" value="Create" class="btn btn-primary real-submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="~/js/events.js"></script>
